@@ -1,0 +1,69 @@
+# ─────────────────────────────────────────────
+# Student Report — DatLang Demo
+# ─────────────────────────────────────────────
+
+# Define thresholds using LET + arithmetic
+LET pass_mark   = 50
+LET bonus       = 5
+LET honor_mark  = 85
+LET effective   = pass_mark + bonus  # effective cutoff = 55
+
+# Query 1: passing students (score > 55)
+result = FROM students
+         WHERE score > effective
+         SELECT name, score
+
+# Query 2: failed students (score <= 55)
+failed = FROM students
+         WHERE score <= effective
+         SELECT name, score
+
+# Count each group
+LET total_passing = COUNT result
+LET total_failed  = COUNT failed
+
+# Print the report header
+PRINT "================================"
+PRINT "         Student Report         "
+PRINT "================================"
+PRINT "Threshold score: 55 (50 + 5 bonus)"
+PRINT "--------------------------------"
+
+# Honor Roll section
+PRINT ">> Honor Roll (score > 85):"
+FOR each student IN result:
+    IF student.score > honor_mark:
+        PRINT student.name
+
+PRINT "--------------------------------"
+
+# Passing section
+PRINT ">> Passing Students (55 < score <= 85):"
+FOR each student IN result:
+    IF student.score > honor_mark:
+        PRINT student.name + " (Honored)"
+    ELSE:
+        PRINT student.name
+
+PRINT "--------------------------------"
+
+# Failed section
+PRINT ">> Failed Students (score <= 55):"
+FOR each student IN failed:
+    PRINT student.name + " (Failed)"
+
+PRINT "--------------------------------"
+
+# Summary
+PRINT ">> Summary:"
+PRINT "   Passing: " + total_passing
+PRINT "   Failed : " + total_failed
+
+PRINT "================================"
+PRINT "   End of Report"
+PRINT "================================"
+
+# Export results to files
+EXPORT result TO "./Output/passing.csv"
+EXPORT failed TO "./Output/failed.json"
+EXPORT result TO "./Output/passing.tsv"
