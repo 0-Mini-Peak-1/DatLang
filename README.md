@@ -54,3 +54,8 @@ FOR each student IN result:
 # Export results
 EXPORT result TO "./Output/passing.csv"
 ```
+
+## Group members:
+- 6600685 - ออมพล โคตรสุโน
+- 6602024 - ปภังกร ธรรมสุขสรรค์
+- 6601398 - ชวกร ทุมมา
